@@ -1,72 +1,88 @@
-var RedisJWT = require('./dist/index');
+var role = require('./dist/index');
 
-var r = new RedisJWT({
-	//host: '/tmp/redis.sock', //unix domain
-	host: '127.0.0.1', //can be IP or hostname
-	port: 6379, // port
-	maxretries: 10, //reconnect retries, default 10
-	//auth: '123', //optional password, if needed
-	db: 0, //optional db selection
-	secret: 'secret_key', // secret key for Tokens!
-	multiple: false, // single or multiple sessions by user
-	kea: true // Enable notify-keyspace-events KEA
-});
+// time
+
+let roles = [
+	{
+		role: 'Developer',
+		ttl: '15 minutes'
+	},
+	{
+		role: 'Specialist',
+		ttl: '2 hours'
+	},
+	{
+		role: 'Manager',
+		ttl: '3 days'
+	},
+	{
+		role: 'Administrator',
+		ttl: '1 years'
+	},
+	{
+		role: 'Director',
+		ttl: '90 minutes'
+	},
+	{
+		role: 'Designer',
+		ttl: '55 hours'
+	},
+	{
+		role: 'other'
+	}
+];
+
+let sum = role.time(roles, 'sum');
+let max = role.time(roles, 'max', 'hours');
+let min = role.time(roles, 'min', 'minutes');
+let average = role.time(roles, 'average', 'days');
+
+console.log(`
+	time
+		sum: ${sum}
+		max: ${max}
+		min: ${min}
+		average: ${average}
+`);
 
 
-// Events
+// require
 
-r.on('ready', () => {
-	console.log('redis-jwt-> ready!');
-});
+let required = [
+	'Developer',
+	'Specialist',
+	'Technician',
+	'Director',
+	'Manager',
+	'Designer',
+	'Analyst',
+	'Administrator'
+];
 
-r.on('connected', () => {
-	console.log('redis-jwt-> connected!');
-});
+let candidates = [
+	'Developer',
+	'Administrator',
+	'Designer'
+];
 
-r.on('disconnected', () => {
-	console.log('redis-jwt-> disconnected!');
-});
+let any1 = role.has(required, candidates);
+let any2 = role.has(['Developer', 'Director'], candidates);
+let any3 = role.has(required, ['Other', 'Fake']);
 
-r.on('error', (err) => {
-	console.log('redis-jwt-> error!', err);
-});
+let all1 = role.has(required, candidates, '*');
+let all2 = role.has(['Developer', 'Analyst'], candidates, '*');
+let all3 = role.has(required, ['Developer', 'Other'], '*');
+let all4 = role.has(required, ['Developer', 'Developer'], '*');
 
-
-var express = require('express');
-
-var app = express();
-
-app.get('/', function (req, res) {
-
-	// Create
-	r.sign('507f191e810c19729de860ea', { ttl: '1m', data: { hello: 'world' }, request: req }).then(sign => {
-
-		// Verify
-		r.verify(sign, true).then(verify => {
-
-			// Exec
-			var rexec = r.exec();
-
-			rexec.rawCall(['keys', `507f191e810c19729de860ea:*`], (err, exec) => {
-
-				// Call
-				var rcall = r.call();
-
-				rcall.getValuesByPattern('507f191e810c19729de860ea').then(call => {
-
-					console.log({ sign, verify, exec, call });
-					res.json({ sign, verify, exec, call });
-				})
-
-			});
-
-		}).catch(err => {
-			console.log('error verify-> ', err);
-		})
-	});
-
-});
-
-app.listen(3000, function () {
-	console.log('Server listening on port 3000!');
-});
+console.log(`
+	has
+		any
+			any1: ${any1}
+			any2: ${any2}
+			any3: ${any3}
+		*
+			all1: ${all1}
+			all2: ${all2}
+			all3: ${all3}
+			all4: ${all4}
+`);
