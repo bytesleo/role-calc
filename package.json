@@ -1,7 +1,7 @@
 {
     "name": "role-ttl",
     "version": "1.0.0",
-    "description": "Calculate time for multiple roles per user",
+    "description": "library to work with roles, contains calculation of times for the session, validation of required roles",
     "main": "dist/index.js",
     "repository": {
         "type": "git",
