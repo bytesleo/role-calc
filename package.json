@@ -1,5 +1,5 @@
 {
-    "name": "role-ttl",
+    "name": "role-calc",
     "version": "1.0.0",
     "description": "library to work with roles, contains calculation of times for the session, validation of required roles",
     "main": "dist/index.js",
