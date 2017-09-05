@@ -1,6 +1,6 @@
-var role = require('./dist/index');
+const role = require('./dist/index');
 
-// time
+// calc
 
 let roles = [
 	{
@@ -32,21 +32,12 @@ let roles = [
 	}
 ];
 
-let sum = role.time(roles, 'sum');
-let max = role.time(roles, 'max', 'hours');
-let min = role.time(roles, 'min', 'minutes');
-let average = role.time(roles, 'average', 'days');
+let sum = role.calc(roles, 'sum');
+let max = role.calc(roles, 'max', 'hours');
+let min = role.calc(roles, 'min', 'minutes');
+let average = role.calc(roles, 'average', 'days');
 
-console.log(`
-	time
-		sum: ${sum}
-		max: ${max}
-		min: ${min}
-		average: ${average}
-`);
-
-
-// require
+// has
 
 let required = [
 	'Developer',
@@ -65,16 +56,26 @@ let candidates = [
 	'Designer'
 ];
 
-let any1 = role.has(required, candidates);
-let any2 = role.has(['Developer', 'Director'], candidates);
-let any3 = role.has(required, ['Other', 'Fake']);
+let any1 = role.has(required, candidates); // true
+let any2 = role.has(['Developer'], candidates); // true
+let any3 = role.has(required, ['Other', 'Fake']); // false
 
-let all1 = role.has(required, candidates, '*');
-let all2 = role.has(['Developer', 'Analyst'], candidates, '*');
-let all3 = role.has(required, ['Developer', 'Other'], '*');
-let all4 = role.has(required, ['Developer', 'Developer'], '*');
+let all1 = role.has(required, candidates, '*'); // false
+let all2 = role.has(['Developer', 'Designer'], candidates, '*'); // true
+let all3 = role.has(['Director'], ['Director', 'Other'], '*'); // true
+
+// time
+
+let time = role.time(roles, candidates);
 
 console.log(`
+	calc
+			sum: ${sum}
+			max: ${max}
+			min: ${min}
+			average: ${average}
+
+
 	has
 		any
 			any1: ${any1}
@@ -84,5 +85,6 @@ console.log(`
 			all1: ${all1}
 			all2: ${all2}
 			all3: ${all3}
-			all4: ${all4}
 `);
+
+console.log(`time:`, time);
