@@ -1,17 +1,15 @@
 import moment from 'moment';
 import ms from 'ms';
 
-export function time(roles, get, format) {
+// calc
+export function calc(roles, get, format) {
 
     if (roles.length > 0) {
 
         let array = [];
         let val = null;
 
-        roles.forEach(role => {
-            if (role.ttl)
-                array.push(parseInt(ms(role.ttl || 0).toFixed(1)))
-        });
+        roles.forEach(role => role.ttl ? array.push(parseInt(ms(role.ttl || 0).toFixed(1))) : null);
 
         switch (get) {
             case 'max':
@@ -27,18 +25,15 @@ export function time(roles, get, format) {
                 break;
 
             case 'average':
-                val = array.reduce((sum, x) => sum + x);
-                val = val / array.length;
+                val = array.reduce((sum, x) => sum + x) / array.length;;
+
                 break;
 
             default:
         }
 
         format = format || 'minutes';
-        val = moment.duration(val, 'milliseconds');
-        val = val.as(format);
-
-        val = `${val} ${format}`;
+        val = `${moment.duration(val, 'milliseconds').as(format)} ${format}`;
 
         return val;
 
@@ -48,6 +43,17 @@ export function time(roles, get, format) {
 
 }
 
+// time
+export function time(base, user) {
+
+    user = duplicity(user);
+
+    let roles = [];
+    user.forEach(role => base.forEach(brole => role === brole.role ? roles.push(brole) : null));
+    return roles;
+}
+
+// has
 export function has(base, user, filter) {
 
     let val = null;
@@ -63,6 +69,7 @@ export function has(base, user, filter) {
     return val;
 }
 
+// any
 function any(base, user) {
 
     let found = false;
@@ -70,6 +77,7 @@ function any(base, user) {
     return found;
 }
 
+// all
 function all(base, user) {
 
     base = duplicity(base);
@@ -78,10 +86,18 @@ function all(base, user) {
     let count = 0;
     user.forEach(_user => base.includes(_user) ? count++ : null);
 
-    return user.length >= base.length ? count === base.length : count === user.length;
+    // console.log(`
 
+    // base: ${base.length}
+    // user: ${user.length}
+    // count: ${count}
+
+    // `);
+
+    return base.length == count;
 }
 
+// duplicity
 function duplicity(array) {
     return array.filter((elem, index, self) => index == self.indexOf(elem));
 }
