@@ -24,6 +24,8 @@ yarn add role-calc
 
 ### has
 
+Evaluate if any of the required roles are met or all
+
 ```javascript
 
 import {has} from 'role-calc';
@@ -48,24 +50,24 @@ let candidates = [
 ];
 
 // if it contains one
-has(required, candidates);						// -> true
-has(['Developer', 'Director'], candidates);		// -> true
-has(required, ['Other', 'Fake']);				// -> false
+has(required, candidates); // -> true
+has(['Developer'], candidates); // -> true
+has(required, ['Other', 'Fake']); // -> false
 
 // must meet everyone '*'
-has(required, candidates, '*');					// -> true
-has(['Developer', 'Analyst'], candidates, '*');	// -> false
-has(required, ['Developer', 'Other'], '*');		// -> false
-has(required, ['Developer', 'Developer'], '*');	// -> true
-
+has(required, candidates, '*'); // -> false
+has(['Developer', 'Designer'], candidates, '*'); // -> true
+has(['Director'], ['Director', 'Other'], '*'); // -> true
 
 ```
 
-### time
+### calc
+
+Calculate time of multiple roles assigned to a user
 
 ```javascript
 
-import {time} from 'role-calc';
+import {calc} from 'role-calc';
 
 // Roles with time
 let roles = [
@@ -106,10 +108,68 @@ time(roles, option, format)
 - format(optional): milliseconds, seconds, minutes, hours, days, weeks, months, years
 */
 
-time(roles, 'sum');				// -> 533805 minutes
-time(roles, 'max', 'hours');	// -> 8766 hours
-time(roles, 'min', 'minutes');	// -> 15 minutes
-time(roles, 'average', 'days');	// -> 61.782986111111114 days
+calc(roles, 'sum'); // -> 533805 minutes
+calc(roles, 'max', 'hours'); // -> 8766 hours
+calc(roles, 'min', 'minutes'); // -> 15 minutes
+calc(roles, 'average', 'days'); // -> 61.782986111111114 days
+
+```
+
+### time
+
+Gets the times of a list from an array of roles
+
+```javascript
+
+import {time} from 'role-calc';
+
+// Roles with time
+let roles = [
+	{
+		role: 'Developer',
+		ttl: '15 minutes'
+	},
+	{
+		role: 'Specialist',
+		ttl: '2 hours'
+	},
+	{
+		role: 'Manager',
+		ttl: '3 days'
+	},
+	{
+		role: 'Administrator',
+		ttl: '1 years'
+	},
+	{
+		role: 'Director',
+		ttl: '90 minutes'
+	},
+	{
+		role: 'Designer',
+		ttl: '55 hours'
+	},
+	{
+		role: 'other'
+	}
+];
+
+// Roles user
+let candidates = [
+	'Developer',
+	'Administrator',
+	'Designer'
+];
+
+time(roles, candidates);
+/*
+->
+[
+	{ role: 'Developer', ttl: '15 minutes' },
+	{ role: 'Administrator', ttl: '1 years' },
+	{ role: 'Designer', ttl: '55 hours' }
+]
+*/
 
 ```
 
