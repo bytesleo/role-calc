@@ -1,6 +1,6 @@
 {
     "name": "role-calc",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "description": "library to work with roles, contains calculation of times for the session, validation of required roles",
     "main": "dist/index.js",
     "repository": {
@@ -8,14 +8,15 @@
         "url": "git+https://github.com/kevoj/role-calc.git"
     },
     "scripts": {
-        "start": "nodemon src/index.js --exec babel-node",
-        "build": "babel src -d dist",
-        "serve": "npm run build && node index.js",
+        "start": "npm run compile & nodemon src/index.js --exec babel-node",
+        "compile": "babel --watch src -d dist",
         "test": "mocha --compilers js:babel-register"
     },
     "keywords": [
         "role",
         "rol",
+        "has-role",
+        "role-calc",
         "ttl",
         "ttl-role",
         "role-ttl",
