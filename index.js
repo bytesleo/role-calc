@@ -85,6 +85,6 @@ console.log(`
 			all1: ${all1}
 			all2: ${all2}
 			all3: ${all3}
+	time
+	    ${JSON.stringify(time, null, 4)}
 `);
-
-console.log(`time:`, time);
