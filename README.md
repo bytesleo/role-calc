@@ -32,32 +32,90 @@ import {has} from 'role-calc';
 
 // Roles required
 let required = [
-	'Developer',
-	'Specialist',
-	'Technician',
-	'Director',
-	'Manager',
-	'Designer',
-	'Analyst',
-	'Administrator'
+    'Developer',
+    'Specialist',
+    'Technician',
+    'Director',
+    'Manager',
+    'Designer',
+    'Analyst',
+    'Administrator'
 ];
 
 // Roles user
 let candidates = [
-	'Developer',
-	'Administrator',
-	'Designer'
+    'Developer',
+    'Administrator',
+    'Designer'
 ];
 
 // if it contains one
-has(required, candidates); // -> true
-has(['Developer'], candidates); // -> true
-has(required, ['Other', 'Fake']); // -> false
+has(required, candidates);         // -> true
+has(['Developer'], candidates);    // -> true
+has(required, ['Other', 'Fake']);  // -> false
 
 // must meet everyone '*'
-has(required, candidates, '*'); // -> false
-has(['Developer', 'Designer'], candidates, '*'); // -> true
-has(['Director'], ['Director', 'Other'], '*'); // -> true
+has(required, candidates, '*');                   // -> false
+has(['Developer', 'Designer'], candidates, '*');  // -> true
+has(['Director'], ['Director', 'Other'], '*');    // -> true
+
+```
+
+### time
+
+Gets the times of a list from an array of roles
+
+```javascript
+
+import {time} from 'role-calc';
+
+// Roles with time
+let roles = [
+    {
+        role: 'Developer',
+        ttl: '15 minutes'
+    },
+    {
+        role: 'Specialist',
+        ttl: '2 hours'
+    },
+    {
+        role: 'Manager',
+        ttl: '3 days'
+    },
+    {
+        role: 'Administrator',
+        ttl: '1 years'
+    },
+    {
+        role: 'Director',
+        ttl: '90 minutes'
+    },
+    {
+        role: 'Designer',
+        ttl: '55 hours'
+    },
+    {
+        role: 'other'
+    }
+];
+
+// Roles user
+let candidates = [
+    'Developer',
+    'Administrator',
+    'Designer'
+];
+
+time(roles, candidates);
+/*
+->
+[
+  { role: 'Developer', ttl: '15 minutes' },
+  { role: 'Administrator', ttl: '1 years' },
+  { role: 'Designer', ttl: '55 hours' }
+]
+*/
 
 ```
 
@@ -71,33 +129,33 @@ import {calc} from 'role-calc';
 
 // Roles with time
 let roles = [
-	{
-		role: 'Developer',
-		ttl: '15 minutes'
-	},
-	{
-		role: 'Specialist',
-		ttl: '2 hours'
-	},
-	{
-		role: 'Manager',
-		ttl: '3 days'
-	},
-	{
-		role: 'Administrator',
-		ttl: '1 years'
-	},
-	{
-		role: 'Director',
-		ttl: '90 minutes'
-	},
-	{
-		role: 'Designer',
-		ttl: '55 hours'
-	},
-	{
-		role: 'other'
-	}
+    {
+        role: 'Developer',
+        ttl: '15 minutes'
+    },
+    {
+        role: 'Specialist',
+        ttl: '2 hours'
+    },
+    {
+        role: 'Manager',
+        ttl: '3 days'
+    },
+    {
+        role: 'Administrator',
+        ttl: '1 years'
+    },
+    {
+        role: 'Director',
+        ttl: '90 minutes'
+    },
+    {
+        role: 'Designer',
+        ttl: '55 hours'
+    },
+    {
+        role: 'other'
+    }
 ];
 
 /*
@@ -115,77 +173,15 @@ calc(roles, 'average', 'days'); // -> 61.782986111111114 days
 
 ```
 
-### time
-
-Gets the times of a list from an array of roles
-
-```javascript
-
-import {time} from 'role-calc';
-
-// Roles with time
-let roles = [
-	{
-		role: 'Developer',
-		ttl: '15 minutes'
-	},
-	{
-		role: 'Specialist',
-		ttl: '2 hours'
-	},
-	{
-		role: 'Manager',
-		ttl: '3 days'
-	},
-	{
-		role: 'Administrator',
-		ttl: '1 years'
-	},
-	{
-		role: 'Director',
-		ttl: '90 minutes'
-	},
-	{
-		role: 'Designer',
-		ttl: '55 hours'
-	},
-	{
-		role: 'other'
-	}
-];
-
-// Roles user
-let candidates = [
-	'Developer',
-	'Administrator',
-	'Designer'
-];
-
-time(roles, candidates);
-/*
-->
-[
-	{ role: 'Developer', ttl: '15 minutes' },
-	{ role: 'Administrator', ttl: '1 years' },
-	{ role: 'Designer', ttl: '55 hours' }
-]
-*/
-
-```
-
 ## Development
 
 ### Start
 
 `npm start`
 
-### Serve
+### Compile
 
-`npm run serve`
-
-### Build
-
-`npm run build`
+`npm run compile`
 
 ### Test
 
